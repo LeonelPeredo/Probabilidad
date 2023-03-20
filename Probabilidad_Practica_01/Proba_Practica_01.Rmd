@@ -1,0 +1,65 @@
+---
+title: "Practica_01"
+author: "Leonel Peredo"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Ejercicio 1
+
+```{r}
+esperanza <- function(rango, puntuales){
+  sum(rango*puntuales)
+}
+```
+# Ejercicio 2
+
+```{r}
+varianza <- function(rango,puntuales){
+  esperanza(rango^2,puntuales)-esperanza(rango,puntuales)^2
+}
+```
+
+# Ejercicio 3
+
+```{r}
+marginal_x <- function(rango_x,rango_y,puntual_conjunta){
+  prob_puntual <- cbind(rango_x,rowSums(puntual_conjunta))
+  return(prob_puntual)
+}
+```
+
+# Ejercicio 4
+
+```{r}
+marginal_y <- function(rango_x,rango_y,puntual_conjunta){
+  prob_puntual <- cbind(rango_y,colSums(puntual_conjunta))
+  return(prob_puntual)
+}
+```
+
+# Ejercicio 5
+
+```{r}
+esperanzaxy <- function(rango_x,rango_y,puntual_conjunta){
+  ret <- 0
+  for(i in 1:length(rango_x)){
+    for(j in 1:length(rango_y)){
+      ret <- ret + i*j*puntual_conjunta[i,j]
+    }
+  }    
+  return(ret)
+}
+
+covarianza <- function(rango_x,rango_y,puntual_conjunta){
+  esperanzaxy <- esperanzaxy(rango_x,rango_y,puntual_conjunta)
+  marginales_x <- marginal_x(rango_x,rango_y,puntual_conjunta)
+  marginales_y <- marginal_y(rango_x,rango_y,puntual_conjunta)
+  esperanzax <- sum(marginales_x[,1]*marginales_x[,2])
+  esperanzay <- sum(marginales_y[,1]*marginales_y[,2])
+  return(esperanzaxy - esperanzax*esperanzay)
+}
+```
+
+
